@@ -38,4 +38,72 @@ public class FirstTest {
 	public void thirdTest() throws TestFailedException {
 		Assert.areEqual("ThirdTest","xmm", "xmm");
 	}
+	
+	@Test
+	public void isTrueSuccess() throws TestFailedException {
+		Assert.isTrue("Is True", true);
+	}
+	
+	@Test
+	public void isTrueFail() throws TestFailedException {
+		Assert.isTrue("isTrueFail", false);
+	}
+	
+	@Test
+	public void isFalseFail() throws TestFailedException {
+		Assert.isFalse("isFalseFail", true);
+	}
+	
+	@Test
+	public void isFalseSuccess() throws TestFailedException {
+		Assert.isFalse("isFalseSuccess", false);
+	}
+	
+	@Test
+	public void isNullSuccess() throws TestFailedException {
+		Assert.isNull("isNullSuccess", null);
+	}
+	
+	@Test
+	public void isNullFail() throws TestFailedException {
+		Assert.isNull("isNullFail", "");
+	}
+	
+	@Test
+	public void isNotNullFail() throws TestFailedException {
+		Assert.notNull("isNotNullFail", null);
+	}
+	
+	@Test
+	public void isNotNullSuccess() throws TestFailedException {
+		Assert.notNull("isNotNullSuccess", "");
+	}
+	
+	@Test
+	public void sameFail() throws TestFailedException {
+		Integer a = new Integer(1);
+		Integer b = new Integer(2);
+		Assert.same("isNotNullSuccess", a, b);
+	}
+	
+	@Test
+	public void sameSuccess() throws TestFailedException {
+		Integer a = new Integer(1);
+		Integer b = a;
+		Assert.same("sameSuccess", a, b);
+	}
+	
+	@Test
+	public void notSameSuccess() throws TestFailedException {
+		Integer a = new Integer(1);
+		Integer b = new Integer(2);
+		Assert.notSame("sameSuccess", a, b);
+	}
+	
+	@Test
+	public void notSameFail() throws TestFailedException {
+		Integer a = new Integer(1);
+		Integer b = a;
+		Assert.notSame("sameSuccess", a, b);
+	}
 }

@@ -43,10 +43,14 @@ public class TestStarter<T> {
 	private void invokeTestMethods(Method[] testMethods, Method beforeMethod, Method afterMethod, T testClassInstance) {
 		for(Method method : testMethods) {
 			try {
-				beforeMethod.invoke(testClassInstance);
+				if(beforeMethod != null) {
+					beforeMethod.invoke(testClassInstance);
+				}
 				method.invoke(testClassInstance);
 				this.printSuccessfulMessage(method.getName());
-				afterMethod.invoke(testClassInstance);
+				if(afterMethod != null) {
+					afterMethod.invoke(testClassInstance);
+				}
 			} catch (InvocationTargetException  e) {
 				if (e.getCause() instanceof TestFailedException) {
 					this.printErrorMessage(e.getCause().getMessage());
