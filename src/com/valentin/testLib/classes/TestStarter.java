@@ -7,6 +7,7 @@ import com.valentin.testLib.annotations.After;
 import com.valentin.testLib.annotations.Before;
 import com.valentin.testLib.annotations.Init;
 import com.valentin.testLib.annotations.Test;
+import com.valentin.testLib.annotations.ThrowExceptionTest;
 import com.valentin.testLib.exceptions.TestFailedException;
 
 import java.lang.annotation.Annotation;
@@ -28,6 +29,30 @@ public class TestStarter<T> {
 		this.ivokeInitMethod(initMethod, testClassInstance);
 		Method[] testMethods = this.getMethodsByAnnotation(methods, Test.class);
 		this.invokeTestMethods(testMethods, beforeMethod, afterMethod, testClassInstance);
+		
+		Method[] throwExceptionMethods = this.getMethodsByAnnotation(methods, ThrowExceptionTest.class);
+		this.invokeThrowExeceptionTests(throwExceptionMethods, testClassInstance);
+	}
+	
+	private void invokeThrowExeceptionTests(Method[] throwExceptionMethods, T testClassInstance) {
+		for(Method method: throwExceptionMethods) {
+			Annotation annotation = method.getAnnotation(ThrowExceptionTest.class);
+			String expectedExceptionName = ((ThrowExceptionTest)annotation).exceptionName();
+			
+			try {
+				method.invoke(testClassInstance);
+				this.printErrorMessage("Method didn't throw exception");
+			} catch (InvocationTargetException  e) {
+				String currentExceptionName = e.getTargetException().getClass().getName();
+				if(currentExceptionName.equals(expectedExceptionName)) {
+					this.printSuccessfulMessage(method.getName());
+				} else {
+					this.printErrorMessage("Method throwed different exception");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void ivokeInitMethod(Method initMethod, T testClassInstance) {
