@@ -10,111 +10,115 @@ import com.valentin.testLib.exceptions.TestFailedException;
 
 public class FirstTest {
 
-	//@Init
+	@Init
 	public void init() {
 		System.out.println("INIT");
 	}
 	
-	//@Before
+	@Before
 	public void before() {
 		System.out.println("Before method");
 	}
 	
-//	@After
+	@After
 	public void after() {
 		System.out.println("After method");
 	}
 	
-	//@Test
+	@Test
 	public void firstTest() throws TestFailedException {
 		Assert.areEqual("FirstTest", "asd", "asd2");
 	}
 	
-	//@Test
+	@Test
 	public void secondTest() throws TestFailedException {
 		Assert.areEqual("SecondTest","xmm", "xmm2");
 	}
 	
-	//@Test
+	@Test
 	public void thirdTest() throws TestFailedException {
 		Assert.areEqual("ThirdTest","xmm", "xmm");
 	}
 	
-	//@Test
+	@Test
 	public void isTrueSuccess() throws TestFailedException {
 		Assert.isTrue("Is True", true);
 	}
 	
-	//@Test
+	@Test
 	public void isTrueFail() throws TestFailedException {
 		Assert.isTrue("isTrueFail", false);
 	}
 	
-	//@Test
+	@Test
 	public void isFalseFail() throws TestFailedException {
 		Assert.isFalse("isFalseFail", true);
 	}
 	
-	//@Test
+	@Test
 	public void isFalseSuccess() throws TestFailedException {
 		Assert.isFalse("isFalseSuccess", false);
 	}
 	
-	//@Test
+	@Test
 	public void isNullSuccess() throws TestFailedException {
 		Assert.isNull("isNullSuccess", null);
 	}
 	
-	//@Test
+	@Test
 	public void isNullFail() throws TestFailedException {
 		Assert.isNull("isNullFail", "");
 	}
 	
-	//@Test
+	@Test
 	public void isNotNullFail() throws TestFailedException {
 		Assert.notNull("isNotNullFail", null);
 	}
 	
-	//@Test
+	@Test
 	public void isNotNullSuccess() throws TestFailedException {
 		Assert.notNull("isNotNullSuccess", "");
 	}
 	
-	//@Test
+	@Test
 	public void sameFail() throws TestFailedException {
 		Integer a = new Integer(1);
 		Integer b = new Integer(2);
 		Assert.same("isNotNullSuccess", a, b);
 	}
 	
-	//@Test
+	@Test
 	public void sameSuccess() throws TestFailedException {
 		Integer a = new Integer(1);
 		Integer b = a;
 		Assert.same("sameSuccess", a, b);
 	}
 	
-	//@Test
+	@Test
 	public void notSameSuccess() throws TestFailedException {
 		Integer a = new Integer(1);
 		Integer b = new Integer(2);
 		Assert.notSame("sameSuccess", a, b);
 	}
 	
-	//@Test
+	@Test
 	public void notSameFail() throws TestFailedException {
 		Integer a = new Integer(1);
 		Integer b = a;
 		Assert.notSame("sameSuccess", a, b);
 	}
 	
-	//@ThrowExceptionTest(exceptionName = "com.valentin.testLib.exceptions.TestFailedException")
+	@ThrowExceptionTest(expected = TestFailedException.class)
 	public void throwExceptionTestSuccess() throws TestFailedException {
 		throw new TestFailedException("message");
 	}
 	
-	@ThrowExceptionTest(exceptionName = "com.valentin.testLib.exceptions.TestFailedException")
+	@ThrowExceptionTest(expected = TestFailedException.class)
 	public void throwExceptionTestFail() throws Exception {
 		throw new Exception("message");
+	}
+	
+	@ThrowExceptionTest(expected = TestFailedException.class)
+	public void throwExceptionTestNotThrowingException() throws Exception {
 	}
 }

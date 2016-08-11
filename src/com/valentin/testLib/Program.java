@@ -1,12 +1,10 @@
 package com.valentin.testLib;
 
-import com.valentin.testLib.classes.TestStarter;
-import com.valentin.testLib.tests.FirstTest;
+import com.valentin.testLib.classes.ExecutePackage;
 
 public class Program {
 
 	public static void main(String[] args) {
-		TestStarter<FirstTest> starter = new TestStarter<>(FirstTest.class);
-		starter.start();
+		ExecutePackage.start("com.valentin.testLib.tests");
 	}
 }

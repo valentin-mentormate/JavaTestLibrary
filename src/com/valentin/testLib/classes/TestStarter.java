@@ -12,16 +12,16 @@ import com.valentin.testLib.exceptions.TestFailedException;
 
 import java.lang.annotation.Annotation;
 
-public class TestStarter<T> {
+public class TestStarter {
 	
-	private Class<T> testClass;
+	private Class testClass;
 	
-	public TestStarter(Class<T> testClass) {
+	public TestStarter(Class testClass) {
 		this.setTestClass(testClass);
 	}
 	
 	public void start() {
-		T testClassInstance = this.instanceClass();
+		Object testClassInstance = this.instanceClass();
 		Method[] methods = this.getMehtods(this.getTestClass());
 		Method initMethod = this.getMethodByAnnotation(methods, Init.class);
 		Method beforeMethod = this.getMethodByAnnotation(methods, Before.class);
@@ -34,10 +34,11 @@ public class TestStarter<T> {
 		this.invokeThrowExeceptionTests(throwExceptionMethods, testClassInstance);
 	}
 	
-	private void invokeThrowExeceptionTests(Method[] throwExceptionMethods, T testClassInstance) {
+	private void invokeThrowExeceptionTests(Method[] throwExceptionMethods, Object testClassInstance) {
 		for(Method method: throwExceptionMethods) {
 			Annotation annotation = method.getAnnotation(ThrowExceptionTest.class);
-			String expectedExceptionName = ((ThrowExceptionTest)annotation).exceptionName();
+			Class<? extends Throwable> expected = ((ThrowExceptionTest)annotation).expected();
+			String expectedExceptionName = expected.getName();
 			
 			try {
 				method.invoke(testClassInstance);
@@ -55,7 +56,7 @@ public class TestStarter<T> {
 		}
 	}
 	
-	private void ivokeInitMethod(Method initMethod, T testClassInstance) {
+	private void ivokeInitMethod(Method initMethod, Object testClassInstance) {
 		if(initMethod != null) {
 			try {
 				initMethod.invoke(testClassInstance);
@@ -65,7 +66,7 @@ public class TestStarter<T> {
 		}
 	}
 	
-	private void invokeTestMethods(Method[] testMethods, Method beforeMethod, Method afterMethod, T testClassInstance) {
+	private void invokeTestMethods(Method[] testMethods, Method beforeMethod, Method afterMethod, Object testClassInstance) {
 		for(Method method : testMethods) {
 			try {
 				if(beforeMethod != null) {
@@ -125,12 +126,12 @@ public class TestStarter<T> {
 		return testMethods.toArray(new Method[testMethods.size()]);
 	}
 	
-	private Method[] getMehtods(Class<T> classParam) {
+	private Method[] getMehtods(Class<Object> classParam) {
 		Method[] methods = classParam.getDeclaredMethods();
 		return methods;
 	}
 	
-	private T instanceClass() {
+	private Object instanceClass() {
 		try {
 			return this.getTestClass().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -138,11 +139,11 @@ public class TestStarter<T> {
 		}
 	}
 
-	private Class<T> getTestClass() {
+	private Class getTestClass() {
 		return testClass;
 	}
 
-	private void setTestClass(Class<T> testClass) {
+	private void setTestClass(Class testClass) {
 		this.testClass = testClass;
 	}
 }
